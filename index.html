@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="referrer" content="no-referrer">
+  <title>AI活用研修｜研修資料</title>
+  <style>
+    :root {
+      --navy: #1c3a5e;
+      --navy-900: #142c48;
+      --navy-700: #2a4d75;
+      --ground: #f5f2ec;
+      --card: #ffffff;
+      --border: #e4ddd0;
+      --ink: #23282e;
+      --muted: #6a7280;
+      --terra: #d97757;
+      --terra-600: #c4603d;
+      --terra-tint: #f6e4da;
+      --shadow: 0 1px 2px rgba(28, 58, 94, .05), 0 18px 44px rgba(28, 58, 94, .09);
+      --font-head: "Yu Gothic", "YuGothic", "Noto Sans JP", sans-serif;
+      --font-body: "Yu Gothic", "YuGothic", "Noto Sans JP", sans-serif;
+      --font-label: "Segoe UI", "Yu Gothic", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--ground);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 420px;
+      padding: 34px max(28px, calc((100vw - 1180px) / 2));
+      color: #f5f2ec;
+      background: var(--navy);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(900px 520px at 88% -8%, rgba(217, 119, 87, .24), transparent 62%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0;
+      color: rgba(245, 242, 236, .64);
+      font-family: var(--font-label);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .brand::before {
+      content: "";
+      width: 34px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--terra);
+    }
+
+    .hero-copy { margin-top: 84px; }
+
+    .eyebrow {
+      margin: 0 0 22px;
+      color: var(--terra);
+      font-family: var(--font-label);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: var(--font-head);
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.13;
+      letter-spacing: .01em;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 24px 0 0;
+      color: rgba(245, 242, 236, .74);
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.8;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 56px));
+      margin: 0 auto;
+      padding: 76px 0 88px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 32px;
+      margin-bottom: 30px;
+    }
+
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 12px;
+      color: var(--terra);
+      font-family: var(--font-label);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .kicker::after {
+      content: "";
+      width: 24px;
+      height: 2px;
+      background: var(--terra);
+      opacity: .55;
+    }
+
+    h2 {
+      margin: 0;
+      color: var(--navy);
+      font-family: var(--font-head);
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.3;
+    }
+
+    .guide {
+      margin: 0 0 4px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .materials {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .material {
+      display: flex;
+      min-height: 360px;
+      flex-direction: column;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+
+    .material:hover,
+    .material:focus-visible {
+      transform: translateY(-5px);
+      border-color: rgba(217, 119, 87, .56);
+      box-shadow: 0 2px 4px rgba(28, 58, 94, .06), 0 24px 54px rgba(28, 58, 94, .14);
+      outline: none;
+    }
+
+    .material-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .number {
+      color: var(--terra);
+      font-family: var(--font-label);
+      font-size: 36px;
+      font-weight: 750;
+      line-height: 1;
+    }
+
+    .tag {
+      padding: 8px 11px;
+      border-radius: 5px;
+      color: var(--navy);
+      background: var(--terra-tint);
+      font-family: var(--font-label);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .material h3 {
+      margin: 34px 0 16px;
+      color: var(--navy);
+      font-family: var(--font-head);
+      font-size: 25px;
+      line-height: 1.5;
+    }
+
+    .material p {
+      margin: 0;
+      color: #4d5560;
+      font-size: 15px;
+      line-height: 1.85;
+    }
+
+    .open {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 30px;
+      color: var(--terra-600);
+      font-family: var(--font-label);
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: .04em;
+    }
+
+    .open::after {
+      content: "→";
+      font-size: 20px;
+      transition: transform .18s ease;
+    }
+
+    .material:hover .open::after,
+    .material:focus-visible .open::after { transform: translateX(4px); }
+
+    .note {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      margin-top: 32px;
+      padding: 20px 24px;
+      border-left: 4px solid var(--terra);
+      border-radius: 7px;
+      color: #4d5560;
+      background: #fff;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .note strong { color: var(--navy); }
+
+    footer {
+      padding: 28px;
+      color: rgba(245, 242, 236, .56);
+      background: var(--navy-900);
+      text-align: center;
+      font-family: var(--font-label);
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .hero { min-height: 380px; }
+      .hero-copy { margin-top: 68px; }
+      .materials { grid-template-columns: 1fr; }
+      .material { min-height: 290px; }
+      .section-head { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (max-width: 600px) {
+      .hero { min-height: 360px; padding-inline: 22px; }
+      .hero-copy { margin-top: 62px; }
+      main { width: min(100% - 36px, 1180px); padding: 56px 0 64px; }
+      .material { padding: 25px; }
+      .note { padding: 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .material, .open::after { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="brand">AI Training Resources</p>
+      <div class="hero-copy">
+        <p class="eyebrow">「相談相手」から「仕事を進めるパートナー」へ</p>
+        <h1>AI活用研修</h1>
+        <p class="lead">AIの基本的な使い方から、社労士業務の作業環境づくり、Claude Codeの仕組みまで。研修資料を順番にご覧いただけます。</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-head">
+      <div>
+        <p class="kicker">Training Materials</p>
+        <h2>研修資料</h2>
+      </div>
+      <p class="guide">カードを選択すると各資料が開きます</p>
+    </div>
+
+    <section class="materials" aria-label="AI活用研修の資料一覧">
+      <a class="material" href="20260817_AI研修スライド.html">
+        <div class="material-top">
+          <span class="number">01</span>
+          <span class="tag">Main Session</span>
+        </div>
+        <h3>AI研修スライド</h3>
+        <p>AIを安全かつ実務的に使うための基本、指示・資料・作業環境の考え方を学ぶ研修スライドです。</p>
+        <span class="open">資料を開く</span>
+      </a>
+
+      <a class="material" href="20260805_ClaudeCode環境構築手順書_社労士業務版.html">
+        <div class="material-top">
+          <span class="number">02</span>
+          <span class="tag">Setup Guide</span>
+        </div>
+        <h3>ClaudeCode環境構築手順書<br>社労士業務版</h3>
+        <p>Claude Codeを社労士業務で使い始めるための環境構築を、順を追って確認できる実践ガイドです。</p>
+        <span class="open">資料を開く</span>
+      </a>
+
+      <a class="material" href="Claude Code マスタークラス_軽量版.html">
+        <div class="material-top">
+          <span class="number">＋</span>
+          <span class="tag">Bonus</span>
+        </div>
+        <h3>（おまけ）<br>Claude Code マスタークラス</h3>
+        <p>Claude Codeの機能構造と安全設計を、さらに深く理解したい方向けの補足資料です。</p>
+        <span class="open">資料を開く</span>
+      </a>
+    </section>
+
+    <aside class="note">
+      <div><strong>閲覧について：</strong>資料は新しいタブを開かず、このページから移動して表示されます。戻るときはブラウザの「戻る」をお使いください。</div>
+    </aside>
+  </main>
+
+  <footer>AI Training Resources</footer>
+</body>
+</html>

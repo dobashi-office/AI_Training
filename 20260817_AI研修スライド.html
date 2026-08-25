@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<title>AI研修スライド｜AIを使う人から、AIを働かせる人へ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* ===== 色トークン（色の変更はこのブロックのみで行う） ===== */
+  --navy:        #1c3a5e;   /* 見出し・濃色面 */
+  --navy-900:    #142c48;
+  --navy-700:    #2a4d75;
+  --ground:      #f5f2ec;   /* スライド地色（クリーム） */
+  --card:        #ffffff;
+  --border:      #e4ddd0;
+  --border-strong:#d3cabb;
+  --ink:         #23282e;   /* 主要テキスト */
+  --ink-2:       #414852;   /* 本文テキスト */
+  --muted:       #6a7280;   /* 補助テキスト */
+  --muted-light: #9aa1ab;   /* 注記・フッター */
+  --terra:       #d97757;   /* 主アクセント（テラコッタ） */
+  --terra-600:   #c4603d;
+  --terra-tint:  #f6e4da;
+  --gold:        #b8894a;   /* 注意 */
+  --ok:          #2f7a58;   /* ○ */
+  --ng:          #b4453a;   /* ✕・禁止 */
+
+  --shadow:    0 1px 2px rgba(28,58,94,.05), 0 10px 26px rgba(28,58,94,.07);
+  --shadow-lg: 0 2px 4px rgba(28,58,94,.06), 0 22px 50px rgba(28,58,94,.12);
+
+  --font-head:  "Zen Kaku Gothic New","Noto Sans JP",sans-serif;
+  --font-body:  "Noto Sans JP",sans-serif;
+  --font-label: "Space Grotesk","Zen Kaku Gothic New",sans-serif;
+  --font-mono:  "Space Mono",ui-monospace,monospace;
+
+  /* ===== 文字サイズ（1920×1080基準） ===== */
+  --t-title: 58px;   /* スライド見出し */
+  --t-sub:   32px;
+  --t-body:  29px;
+  --t-small: 25px;   /* 本文・カード内 */
+  --t-kick:  24px;   /* キッカー・ラベル */
+
+  --pad-x: 120px;
+  --pad-y: 88px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:var(--font-body); background:#e9e3d8; color:var(--ink);
+  overflow:hidden; -webkit-font-smoothing:antialiased; line-height:1.7;
+  display:flex; align-items:center; justify-content:center;
+  counter-reset:page;
+}
+
+/* ===== ステージ（1920×1080固定／自動スケール） ===== */
+#stage{ width:1920px; height:1080px; position:relative; transform-origin:center center;
+  flex-shrink:0; box-shadow:var(--shadow-lg); }
+
+/* ===== スライド ===== */
+.slide{
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  padding:var(--pad-y) var(--pad-x);
+  background:var(--ground); color:var(--ink);
+  font-family:var(--font-body); font-weight:400;
+  text-wrap:pretty; overflow:hidden; counter-increment:page;
+  print-color-adjust:exact; -webkit-print-color-adjust:exact;
+  opacity:0; visibility:hidden; transition:opacity .45s ease;
+}
+.slide.active{ opacity:1; visibility:visible; }
+
+/* ===== 共通ヘッダー（キッカー＋見出し＋バー） ===== */
+.head{ flex:none; }
+.kicker{
+  display:flex; align-items:center; gap:16px;
+  font-family:var(--font-label); font-weight:600;
+  font-size:var(--t-kick); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--terra); margin:0 0 26px;
+}
+.kicker .jp{ font-family:var(--font-body); font-weight:500; letter-spacing:.02em;
+  text-transform:none; color:var(--muted); font-size:24px; }
+.kicker .sep{ width:26px; height:2px; background:var(--terra); opacity:.5; }
+.stitle{ font-family:var(--font-head); font-weight:900; font-size:var(--t-title);
+  line-height:1.16; letter-spacing:.005em; color:var(--navy); margin:0; }
+.stitle b{ color:var(--terra); font-weight:900; }
+.bar{ width:76px; height:6px; background:var(--terra); margin-top:28px; border-radius:2px; }
+
+/* ===== 本文領域 ===== */
+.body{ flex:1; display:flex; flex-direction:column; justify-content:center; min-height:0; }
+.body.top{ justify-content:flex-start; padding-top:56px; }
+
+/* ===== フッター（ページ番号は自動採番） ===== */
+.foot{ flex:none; display:flex; align-items:center; gap:16px;
+  font-family:var(--font-label); font-size:24px; letter-spacing:.08em;
+  color:var(--muted-light); margin-top:40px; }
+.foot .pg{ font-weight:600; color:var(--terra); }
+.foot .pg::before{ content:counter(page,decimal-leading-zero); }
+.foot .tick{ width:22px; height:2px; background:var(--border-strong); }
+
+/* ===== カード／グリッド ===== */
+.card{ background:var(--card); border:1px solid var(--border); border-radius:8px;
+  box-shadow:var(--shadow); padding:40px 44px; position:relative; }
+.card.note  { border-left:4px solid var(--terra); }
+.card.warn  { border-left:4px solid var(--gold); }
+.card.danger{ border-left:4px solid var(--ng); }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:36px; }
+.grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:32px; }
+.grid22{ display:grid; grid-template-columns:1fr 1fr; grid-auto-rows:1fr; gap:32px; }
+
+.tag{ display:inline-flex; align-items:center; font-family:var(--font-label); font-weight:600;
+  font-size:24px; letter-spacing:.03em; line-height:1; padding:11px 18px; border-radius:5px;
+  color:var(--navy); background:var(--terra-tint); border:1px solid transparent; }
+.tag.terra{ background:var(--terra); color:#fff; }
+.tag.navy { background:var(--navy); color:#fff; }
+.tag.ghost{ background:transparent; color:var(--muted); border-color:var(--border-strong); }
+
+.c-title{ font-family:var(--font-head); font-weight:700; font-size:34px; line-height:1.25;
+  color:var(--navy); margin:0; }
+.c-body { font-size:var(--t-small); line-height:1.62; color:var(--ink-2); margin:0; }
+.c-body .k{ color:var(--navy); font-weight:700; }
+.c-body + .c-body{ margin-top:16px; }
+.c-num  { font-family:var(--font-label); font-weight:700; font-size:48px; color:var(--terra); line-height:1; }
+
+/* ===== 箇条書き（角丸スクエアの「＋」型） ===== */
+.plist{ list-style:none; margin:0; padding:0; }
+.plist li{ position:relative; padding-left:40px; font-size:var(--t-small);
+  line-height:1.5; color:var(--ink-2); }
+.plist li + li{ margin-top:20px; }
+.plist.tight li + li{ margin-top:14px; }
+.plist li::before{ content:''; position:absolute; left:4px; top:.6em;
+  width:13px; height:13px; background:var(--terra); border-radius:3px; }
+.plist .k{ color:var(--navy); font-weight:700; }
+
+/* ===== インライン装飾（パス・コマンド） ===== */
+.path{ font-family:var(--font-mono); font-size:24px; color:var(--terra-600);
+  background:var(--terra-tint); padding:3px 10px; border-radius:5px; white-space:nowrap; }
+.chip{ font-family:var(--font-mono); font-size:24px; font-weight:700; color:#fff;
+  background:var(--navy); padding:6px 14px; border-radius:6px; white-space:nowrap; }
+
+/* ===== 表紙 ===== */
+.cover{ justify-content:space-between; }
+.cover::before{ content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(1200px 700px at 82% -10%, rgba(217,119,87,.20), transparent 60%); }
+.cover > *{ position:relative; z-index:1; }
+.cover-eyebrow{ font-family:var(--font-head); font-weight:700; font-size:34px;
+  color:var(--terra); margin:0; letter-spacing:.01em; }
+.cover-eyebrow::before{ content:''; display:inline-block; width:54px; height:6px;
+  background:var(--terra); border-radius:2px; vertical-align:middle; margin-right:24px;
+  position:relative; top:-6px; }
+.cover-title{ font-family:var(--font-head); font-weight:900; font-size:104px; line-height:1.08;
+  letter-spacing:.005em; margin:0; color:#fbf9f5; }
+.cover-title-2{ font-size:76px; color:var(--ground); }
+.cover-sub{ font-size:30px; line-height:1.55; color:rgba(245,242,236,.72); margin:34px 0 0; max-width:1380px; }
+.cover-bottom{ display:grid; grid-template-columns:1fr auto; gap:80px; align-items:center; }
+.cover-obj{ border:1px solid rgba(245,242,236,.24); border-left:4px solid var(--terra);
+  border-radius:8px; padding:30px 38px; max-width:1020px; background:rgba(255,255,255,.03); }
+.cover-obj .lab{ font-family:var(--font-label); font-weight:600; font-size:24px; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--terra); display:block; margin-bottom:14px; }
+.cover-obj p{ font-size:30px; line-height:1.42; margin:0; color:var(--ground); }
+.cover-obj b{ color:#fff; font-weight:700; }
+.cover-badges{ display:flex; flex-direction:column; gap:16px; align-items:flex-start; }
+.badge{ font-family:var(--font-head); font-weight:700; font-size:26px; padding:14px 26px;
+  border-radius:8px; white-space:nowrap; border:1px solid rgba(245,242,236,.28); color:var(--ground); }
+.badge.b-terra{ background:var(--terra); border-color:var(--terra); color:#fff; }
+.cover-meta{ display:flex; align-items:center; gap:18px; font-family:var(--font-label);
+  font-size:24px; letter-spacing:.06em; color:rgba(245,242,236,.55); }
+.cover-meta .dot{ width:6px; height:6px; border-radius:50%; background:var(--terra); }
+
+/* ===== セクション扉 ===== */
+.slide--section{ justify-content:center; }
+.sec-no{ font-family:var(--font-label); font-weight:700; font-size:150px; line-height:.9; color:var(--terra); }
+.sec-title{ font-family:var(--font-head); font-weight:900; font-size:76px; line-height:1.14;
+  color:var(--navy); margin-top:18px; }
+.sec-sub{ font-size:30px; line-height:1.5; color:var(--muted); margin-top:22px; max-width:1250px; }
+
+/* ===== 大きな一言（ステートメント） ===== */
+.slide--statement{ justify-content:center; }
+.statement{ font-family:var(--font-head); font-weight:900; font-size:72px; line-height:1.32;
+  color:var(--navy); max-width:1520px; }
+.statement b{ color:var(--terra); font-weight:900; }
+.statement-sub{ font-size:30px; line-height:1.6; color:var(--muted); margin-top:36px; max-width:1300px; }
+
+/* ===== 濃色スライド（表紙・セクション扉・締め） ===== */
+.slide.dark{ background:var(--navy); color:var(--ground); }
+.slide.dark .stitle,
+.slide.dark .sec-title,
+.slide.dark .statement{ color:#fbf9f5; }
+.slide.dark .kicker .jp{ color:rgba(245,242,236,.6); }
+.slide.dark .sec-sub,
+.slide.dark .statement-sub{ color:rgba(245,242,236,.72); }
+.slide.dark .card{ background:rgba(255,255,255,.05); border-color:rgba(245,242,236,.18); box-shadow:none; }
+.slide.dark .c-title{ color:#fbf9f5; }
+.slide.dark .c-body,
+.slide.dark .plist li{ color:rgba(245,242,236,.78); }
+.slide.dark .c-body .k,
+.slide.dark .plist .k{ color:#fff; }
+.slide.dark .tag{ background:rgba(217,119,87,.28); color:#fff; }
+.slide.dark .tag.ghost{ background:transparent; color:rgba(245,242,236,.7); border-color:rgba(245,242,236,.3); }
+.slide.dark .eyebrow-caption{ color:rgba(245,242,236,.65); }
+.slide.dark .eyebrow-caption .k{ color:#fff; }
+.slide.dark .foot{ color:rgba(245,242,236,.5); }
+.slide.dark .foot .tick{ background:rgba(245,242,236,.3); }
+.slide.dark .foot .pg{ color:var(--terra); }
+
+/* ===== 3分割の階層（レイヤー） ===== */
+.layer{ display:flex; flex-direction:column; }
+.layer .lv{ font-family:var(--font-label); font-weight:600; font-size:24px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--terra); margin-bottom:10px; }
+.layer .ln{ font-family:var(--font-head); font-weight:700; font-size:32px; color:var(--navy); margin-bottom:12px; }
+.layer .ld{ font-size:24px; line-height:1.5; color:var(--ink-2); }
+
+/* ===== ツリー（フォルダ構成など） ===== */
+.tree{ font-family:var(--font-mono); font-size:24px; line-height:1.75; white-space:pre; margin:0; color:var(--ink); }
+.tree .cm { color:var(--muted-light); }
+.tree .dir{ color:var(--terra-600); font-weight:700; }
+
+/* ===== フロー（手順・ステップ） ===== */
+.flow{ display:flex; align-items:stretch; gap:0; }
+.flow .card{ flex:1; }
+.flow-arrow{ flex:0 0 76px; display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-head); font-size:52px; color:var(--terra); font-weight:700; }
+.step-n{ font-family:var(--font-label); font-weight:700; font-size:24px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--terra); display:block; margin-bottom:16px; }
+
+/* ===== 対比（左右2枚＋中央の矢印） ===== */
+.versus{ display:grid; grid-template-columns:1fr 190px 1fr; align-items:center; }
+.versus-mid{ display:flex; flex-direction:column; gap:20px; align-items:center;
+  font-family:var(--font-head); font-weight:700; font-size:24px; color:var(--terra); }
+.versus-mid span{ white-space:nowrap; }
+
+/* ===== 表 ===== */
+.dtable{ width:100%; border-collapse:separate; border-spacing:0; font-size:26px;
+  background:var(--card); border-radius:8px; overflow:hidden; box-shadow:var(--shadow); }
+.dtable th,.dtable td{ text-align:left; padding:26px 30px; vertical-align:top; }
+.dtable thead th{ background:var(--navy); color:var(--ground); font-family:var(--font-head);
+  font-weight:700; font-size:24px; letter-spacing:.02em; }
+.dtable tbody td{ border-top:1px solid var(--border); line-height:1.4; color:var(--ink-2); }
+.dtable tbody tr:nth-child(even) td{ background:#faf7f1; }
+.dtable .lyr { font-family:var(--font-head); font-weight:700; color:var(--terra); white-space:nowrap; }
+.dtable .file{ font-family:var(--font-mono); font-size:24px; color:var(--navy); }
+.dtable .meta{ font-family:var(--font-head); font-weight:700; color:var(--navy); }
+.dtable .ok{ color:var(--ok); font-weight:700; }
+.dtable .no{ color:var(--ng); font-weight:700; }
+
+/* ===== まとめ（テイクアウェイ） ===== */
+.takeaways{ display:flex; flex-direction:column; gap:28px; }
+.take{ display:grid; grid-template-columns:96px 1fr; align-items:start; gap:30px; }
+.take .tn{ font-family:var(--font-label); font-weight:700; font-size:60px; color:var(--terra); line-height:.9; }
+.take .th{ font-family:var(--font-head); font-weight:700; font-size:34px; color:var(--navy); margin:0 0 8px; }
+.take .tb{ font-size:25px; line-height:1.45; color:var(--ink-2); margin:0; }
+.closing{ margin-top:40px; background:var(--navy); color:var(--ground); border-radius:10px;
+  padding:34px 44px; font-family:var(--font-head); font-weight:500; font-size:30px; line-height:1.5; }
+.closing b{ color:var(--terra); font-weight:700; }
+
+/* ===== 補足キャプション ===== */
+.eyebrow-caption{ font-size:26px; line-height:1.5; color:var(--muted); }
+.eyebrow-caption .k{ color:var(--navy); font-weight:700; }
+
+/* ===== 余白ユーティリティ（必ずCSSの最後に置く） =====
+   各コンポーネントが持つ margin:0 に負けないよう、クラスを重ねて
+   詳細度を上げたうえで、定義順も最後にしている。順序を入れ替えないこと。 */
+.stack-sm.stack-sm > * + *{ margin-top:18px; }
+.stack-md.stack-md > * + *{ margin-top:24px; }
+.mb-lg.mb-lg{ margin-bottom:34px; }
+.mt-lg.mt-lg{ margin-top:34px; }
+
+/* ===== ナビUI（ステージ外・固定・スケール対象外） ===== */
+.nav-ui{ position:fixed; z-index:50; }
+.progress{ left:0; top:0; height:4px; width:100%; background:transparent; }
+.progress .bar{ height:100%; width:0; background:var(--terra); transition:width .4s ease; }
+.hint{ left:20px; bottom:16px; font-family:var(--font-label); font-size:13px;
+  letter-spacing:.06em; color:var(--muted-light); }
+.hint kbd{ background:#fff; border:1px solid var(--border-strong); border-radius:6px;
+  padding:1px 7px; color:var(--muted); font-family:inherit; }
+
+/* ===== 入場アニメーション ===== */
+@media (prefers-reduced-motion:no-preference){
+  .slide.active .head, .slide.active .body, .slide.active.cover > *{
+    animation:rise .5s cubic-bezier(.2,.8,.2,1) both; }
+  .slide.active .body{ animation-delay:.06s; }
+  @keyframes rise{ from{ opacity:0; transform:translateY(16px); } }
+}
+
+/* ===== 印刷（PDF化：1スライド=1ページ・横） ===== */
+@media print{
+  @page{ size:1920px 1080px; margin:0; }
+  body{ display:block; overflow:visible; background:#fff; }
+  #stage{ width:auto; height:auto; transform:none!important; box-shadow:none; }
+  .slide{ position:relative; inset:auto; width:1920px; height:1080px;
+    opacity:1!important; visibility:visible!important; page-break-after:always; }
+  .nav-ui{ display:none!important; }
+}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ===== 01 表紙 ===== -->
+<section class="slide dark cover active">
+  <p class="cover-eyebrow">社労士のためのAI活用研修</p>
+  <div>
+    <h1 class="cover-title-2">AIを使う人から、<br><span class="cover-title">AIを働かせる人へ</span></h1>
+    <p class="cover-sub">その差は、能力ではなく環境と設計で決まります。今日はツールの操作説明ではなく、仕事の設計の話です。</p>
+  </div>
+  <div class="cover-bottom">
+    <div class="cover-obj">
+      <span class="lab">本日のゴール</span>
+      <p>プロンプトエンジニアリング／定型業務のボット化／AIに実作業を任せる／<b>コンテキスト・ハーネスエンジニアリング</b></p>
+    </div>
+    <div class="cover-badges">
+      <span class="badge b-terra">ブラウザAI</span>
+      <span class="badge">チャットボット化</span>
+      <span class="badge">自分専用の環境</span>
+    </div>
+  </div>
+  <div class="cover-meta"><span>HR TRAINING &amp; DEVELOPMENT</span><span class="dot"></span><span>土橋社労士事務所</span><span class="dot"></span><span>2026</span></div>
+</section>
+
+<!-- ===== 02 実演 ===== -->
+<section class="slide dark slide--statement">
+  <div class="head">
+    <div class="kicker">Demonstration<span class="sep"></span><span class="jp">実演</span></div>
+  </div>
+  <div class="body">
+    <p class="statement">実演</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 03 素のブラウザAIと何が違うのか ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Opening<span class="sep"></span><span class="jp">種明かし</span></div>
+    <h2 class="stitle">素のブラウザAIと、<b>何が違うのか</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <p class="eyebrow-caption mb-lg"><span class="k">特別なAI機能を使ったわけではありません。</span>違うのは、AIに渡している環境です。</p>
+    <div class="grid2">
+      <div class="card stack-md">
+        <div><span class="tag ghost">蓄積と構造</span></div>
+        <p class="c-title">過去の情報が、<br>データとして貯まっている</p>
+        <p class="c-body">そして<span class="k">フォルダ構造が整っている</span>ので、どこに何があるかを指定できる。</p>
+      </div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">作業ルール</span></div>
+        <p class="c-title">AIの作業手順が<br>決まっている</p>
+        <p class="c-body"><span class="k">CLAUDE.md（AIへの作業指示書）</span>やスキルに、何をどうするかが書いてある。</p>
+      </div>
+    </div>
+    <div class="card note mt-lg">
+      <p class="c-body">だから、<span class="k">毎回同じ品質で、安定した作業ができる。</span>この2つの作り方は、第3部で扱います。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 04 AI活用の差 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Opening<span class="sep"></span><span class="jp">前提</span></div>
+    <h2 class="stitle">AI活用の差は、<b>PCスキルの差</b>ではありません</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <p class="eyebrow-caption mb-lg">では、なぜその環境を作らないのか。<span class="k">ここから先は、能力ではなく考え方の問題です。</span></p>
+    <div class="grid2">
+      <div class="card stack-md">
+        <div><span class="tag ghost">使わない理由</span></div>
+        <p class="c-title">まじめで自信がある人ほど、<br>AIを使わない</p>
+        <ul class="plist tight">
+          <li>自分でやったほうが早い</li>
+          <li>AIの答えは信用できない</li>
+          <li>手を抜いている気がする</li>
+        </ul>
+      </div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">今日決めること</span></div>
+        <p class="c-title">「使うか使わないか」<br>ではありません</p>
+        <p class="c-body"><span class="k">どこまでなら安全に任せられるか。</span>その線を、今日一緒に引きます。</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 05 専門家の仕事 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Opening<span class="sep"></span><span class="jp">専門家の役割</span></div>
+    <h2 class="stitle">専門家の仕事は、なくなりません。<b>変わるのはやり方</b>です</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="versus">
+      <div class="card stack-md">
+        <div><span class="tag ghost">AI</span></div>
+        <p class="c-title">検索・整理・比較・下書き</p>
+        <p class="c-body">条文を探す、過去の事例と比べる、文章のたたき台を作る。<span class="k">ここは人より速い。</span></p>
+      </div>
+      <div class="versus-mid"><span>分担する</span><span>&#8644;</span></div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">人</span></div>
+        <p class="c-title">判断・責任・個別事情・<br>顧客との関係</p>
+        <p class="c-body">その会社固有の事情を踏まえ、<span class="k">責任を持って決める。</span></p>
+      </div>
+    </div>
+    <p class="eyebrow-caption mt-lg">下書きにかかる時間が減れば、<span class="k">判断と関係づくりに使える時間が増える。</span></p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 06 今日のゴール ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Opening<span class="sep"></span><span class="jp">到達点</span></div>
+    <h2 class="stitle">今日の<b>ゴール</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid22">
+      <div class="card stack-sm">
+        <span class="c-num">01</span>
+        <p class="c-title">プロンプトエンジニアリング</p>
+        <p class="c-body">安全に、正確に相談する（第1部）</p>
+      </div>
+      <div class="card stack-sm">
+        <span class="c-num">02</span>
+        <p class="c-title">定型業務をボット化する</p>
+        <p class="c-body">毎回同じ説明をしている業務を置き換える（第2部）</p>
+      </div>
+      <div class="card stack-sm">
+        <span class="c-num">03</span>
+        <p class="c-title">AIに実作業を任せる</p>
+        <p class="c-body">AIにパソコンを使わせる（第3部 前半）</p>
+      </div>
+      <div class="card note stack-sm">
+        <span class="c-num">04</span>
+        <p class="c-title">コンテキストエンジニアリング<br>ハーネスエンジニアリング</p>
+        <p class="c-body">渡す知識と、働ける足場を設計する（第3部 後半）</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 07 第1部 扉 ===== -->
+<section class="slide dark slide--section">
+  <div class="kicker">Part 01<span class="sep"></span><span class="jp">第1部</span></div>
+  <div class="sec-no">01</div>
+  <h2 class="sec-title">ブラウザAIを正しく使う</h2>
+  <p class="sec-sub">2種類のプロンプトエンジニアリング／3つのリスク／カスタム指示</p>
+</section>
+
+<!-- ===== 08 AI（モデル）に検索能力はありません ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">前提の確認</span></div>
+    <h2 class="stitle">AI(モデル)に<b>検索能力</b>はありません</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid2 mb-lg">
+      <div class="card stack-md">
+        <div><span class="tag ghost">検索</span></div>
+        <p class="c-title">どこかにある正解を探して、<br>そのまま出す</p>
+      </div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">生成</span></div>
+        <p class="c-title">渡された文脈から、<br>もっともらしい文章を作る</p>
+      </div>
+    </div>
+    <ul class="plist tight">
+      <li><span class="k">だから、渡すものを変えれば、答えが変わる</span>　― 第1部の前半</li>
+      <li><span class="k">そして、渡していないことも、それらしく作ってしまう</span>　― 第1部の後半</li>
+    </ul>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 09 2つの役割 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">第1部の地図</span></div>
+    <h2 class="stitle">プロンプトエンジニアリングには、<b>2つの役割</b>があります</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid2 mb-lg">
+      <div class="card note stack-sm">
+        <span class="c-num">01</span>
+        <p class="c-title">的確な回答・成果物を<br>出させる</p>
+        <p class="c-body">欲しいものを、欲しい形で出す</p>
+      </div>
+      <div class="card note stack-sm">
+        <span class="c-num">02</span>
+        <p class="c-title">事故を防ぐ</p>
+        <p class="c-body">誤答を減らし、あとから確認できる形にする</p>
+      </div>
+    </div>
+    <p class="eyebrow-caption mb-lg">同じ「指示の書き方」の話ですが、<span class="k">目的が違います。</span>順に見ていきます。</p>
+    <p class="eyebrow-caption">なお、プロンプト以前の大前提として<span class="k">「入れてはいけないものを入れない」</span>があります。これは後半で扱います。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 小扉 役割1 ===== -->
+<section class="slide slide--section">
+  <div class="kicker">Part 01<span class="sep"></span><span class="jp">第1部</span></div>
+  <div><span class="tag terra">役割 1</span></div>
+  <h2 class="sec-title">的確な回答・成果物を<br>出させる</h2>
+  <p class="sec-sub">プロンプトの4要素／曖昧な指示を避ける／逆質問で引き出す／チャットの区切り方／指示の直し方</p>
+</section>
+
+<!-- ===== 10 プロンプトの4要素 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割1｜的確な成果物</span></div>
+    <h2 class="stitle">プロンプトのコツは<b>4つだけ</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid22">
+      <div class="card stack-sm">
+        <span class="c-num">01</span>
+        <p class="c-title">ペルソナ｜誰として</p>
+        <p class="c-body">社労士として、経営者向けに</p>
+      </div>
+      <div class="card stack-sm">
+        <span class="c-num">02</span>
+        <p class="c-title">タスク｜何をする</p>
+        <p class="c-body">整理する、比較する、下書きを作る</p>
+      </div>
+      <div class="card stack-sm">
+        <span class="c-num">03</span>
+        <p class="c-title">制約｜何をしない</p>
+        <p class="c-body">断定しない、資料外は答えない</p>
+      </div>
+      <div class="card stack-sm">
+        <span class="c-num">04</span>
+        <p class="c-title">フォーマット｜どの形で出す</p>
+        <p class="c-body">箇条書き、表、3行以内</p>
+      </div>
+    </div>
+    <p class="eyebrow-caption mt-lg">凝ったテクニックは要りません。<span class="k">うまくいかないときは、この4つのどれかが抜けています。</span></p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 11 曖昧な指示 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割1｜的確な成果物</span></div>
+    <h2 class="stitle">曖昧な指示は、<b>曖昧な回答</b>になる</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid2 mb-lg">
+      <div class="card danger stack-md">
+        <div><span class="tag ghost">悪い例</span></div>
+        <p class="c-title">「いい感じにまとめて」</p>
+        <p class="c-body">4要素が全部抜けている。だから曖昧な答えが返ってくる。</p>
+      </div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">良い例</span></div>
+        <p class="c-title">「経営者向けに、結論・リスク・<br>対応案を各3行以内で」</p>
+        <p class="c-body">短いが、ペルソナ・タスク・フォーマットが入っている。</p>
+      </div>
+    </div>
+    <div class="card stack-md">
+      <div><span class="tag navy">実務例</span></div>
+      <p class="c-body">社労士として、この相談を顧問先説明用に整理してください。断定できない点は未確認事項とし、リスク・理由・対応案の順で出してください。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 12 プランモード ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割1｜的確な成果物</span></div>
+    <h2 class="stitle">指示が思いつかないときは、<b>逆質問で</b>能力を引き出す</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="card note stack-md mb-lg">
+      <div><span class="tag terra">そのまま使えます</span></div>
+      <p class="c-title">「◯◯したい。そのために、私は何をどう指示すればいいですか」</p>
+    </div>
+    <div class="flow">
+      <div class="card">
+        <span class="step-n">Step 1</span>
+        <p class="c-title">方法を先に<br>考えさせる</p>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="card">
+        <span class="step-n">Step 2</span>
+        <p class="c-title">出てきた手順を<br>確認する</p>
+      </div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="card">
+        <span class="step-n">Step 3</span>
+        <p class="c-title">承認してから<br>実行させる</p>
+      </div>
+    </div>
+    <p class="eyebrow-caption mt-lg">この形を<span class="k">プランモード</span>と呼びます。第3部で、そのまま安全装置になります。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 13 チャットは短く区切る ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割1｜的確な成果物</span></div>
+    <h2 class="stitle">チャットは<b>短く区切る</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <ul class="plist tight mb-lg">
+      <li>1チャット1テーマ</li>
+      <li>結論が出たら終了</li>
+      <li>話題が変わったら新しいチャット</li>
+      <li>必要な内容だけ引き継ぐ</li>
+    </ul>
+    <div class="card warn mb-lg">
+      <p class="c-body"><span class="k">会話が長くなるほど、指示が混線します。</span>最初の指示と後の指示が矛盾する／誤った前提が残る／古い資料の影響が残る。</p>
+    </div>
+    <p class="eyebrow-caption">「長く使うほどAIが理解してくれる」は逆。<span class="k">短く切るほど精度は上がります。</span></p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 14 直すべきは元の指示 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割1｜的確な成果物</span></div>
+    <h2 class="stitle">直すべきは、返答ではなく<b>元の指示</b>です</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="card danger stack-md mb-lg">
+      <p class="c-title">次の発言で「そうじゃない」と叱らない</p>
+      <p class="c-body">間違った指示が会話に残ったままになり、AIはそれも文脈として読み続けます。<span class="k">叱るほど、こじれていきます。</span></p>
+    </div>
+    <div class="grid2">
+      <div class="card stack-md">
+        <div><span class="tag ghost">方法 1</span></div>
+        <p class="c-title">元の指示を修正して再実行</p>
+        <p class="c-body">編集機能があるサービスなら、最初の指示そのものを直す。</p>
+      </div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">方法 2</span></div>
+        <p class="c-title">新しいチャットを始める</p>
+        <p class="c-body">修正した指示で開き直すほうが早いこともあります。</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 小扉 役割2 ===== -->
+<section class="slide slide--section">
+  <div class="kicker">Part 01<span class="sep"></span><span class="jp">第1部</span></div>
+  <div><span class="tag terra">役割 2</span></div>
+  <h2 class="sec-title">事故を防ぐ</h2>
+  <p class="sec-sub">3つのリスク／入力前の確認／ハルシネーションを減らす指示／資料の中だけで答えさせる／原文にあたる</p>
+</section>
+
+<!-- ===== 15 3つのリスク ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割2｜事故を防ぐ</span></div>
+    <h2 class="stitle">AIを使うときの<b>3つのリスク</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid3">
+      <div class="card stack-sm">
+        <span class="c-num">01</span>
+        <p class="c-title">入れてはいけないものを<br>入れる</p>
+        <p class="c-body">個人情報、営業秘密</p>
+      </div>
+      <div class="card stack-sm">
+        <span class="c-num">02</span>
+        <p class="c-title">ハルシネーションに気付かない</p>
+        <p class="c-body">事実でないことを、それらしく書く</p>
+      </div>
+      <div class="card stack-sm">
+        <span class="c-num">03</span>
+        <p class="c-title">AIの答えを、<br>そのまま使う</p>
+        <p class="c-body">手を加えずに顧客へ出してしまう</p>
+      </div>
+    </div>
+    <div class="card note mt-lg">
+      <p class="c-body"><span class="k">指示の書き方で、②と③は減らせます。</span>①だけは、指示では防げません。設定と運用で決めます。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 16 入力する前に確認する ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割2｜リスク①</span></div>
+    <h2 class="stitle">入力する前に<b>確認する</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <ul class="plist tight mb-lg">
+      <li><span class="k">❶ 学習機能をオフにする</span>　入力内容がモデルの学習に使われない設定にする。<span class="k">まずここ</span></li>
+      <li><span class="k">❷ 個人名・顧客名は必要か</span>　多くの場合、A社・Bさんで足りる</li>
+      <li><span class="k">❸ 第三者の資料を入れてよいか</span>　顧客から預かった書類、他社が作成した資料</li>
+      <li><span class="k">❹ プランと契約を確認する</span>　無料版／有料版／法人契約で既定が違う</li>
+    </ul>
+    <div class="card danger">
+      <p class="c-body"><span class="k">これだけは、指示の書き方では防げません。</span>事務所として決めておく。個人の判断に任せると、必ずばらつきます。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 17 誤答を減らす指示 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割2｜リスク②</span></div>
+    <h2 class="stitle">ハルシネーションは、<b>指示で減らせる</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <p class="eyebrow-caption mb-lg"><span class="k">危険なのは明らかな誤答ではなく、専門家でも見落とす「それらしい誤答」。</span>条文番号が一つずれる／施行日が古い／例外規定が抜ける。</p>
+    <div class="card note stack-md">
+      <div><span class="tag terra">そのままコピーして使える指示</span></div>
+      <ul class="plist tight">
+        <li>「わからないときは、<span class="k">わからないと答えてください</span>」</li>
+        <li>「回答の各項目に、<span class="k">引用元を明示してください</span>」</li>
+        <li>「<span class="k">事実と推測を分けて</span>書いてください」</li>
+      </ul>
+    </div>
+    <p class="eyebrow-caption mt-lg">この3つは、あとで出てくる<span class="k">カスタム指示</span>に入れて、毎回書かずに済ませます。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 18 ソースグラウンディング ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割2｜リスク②</span></div>
+    <h2 class="stitle">もっと厳密にするなら、<b>資料の中だけ</b>で答えさせる</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="card note stack-md mb-lg">
+      <div><span class="tag terra">そのままコピーして使える指示</span></div>
+      <p class="c-title">「添付した資料の範囲内でのみ回答してください。<br>資料にないことは「記載なし」としてください」</p>
+    </div>
+    <div class="grid2">
+      <div class="card stack-md">
+        <p class="c-title">これがソースグラウンディング</p>
+        <p class="c-body">代表例が<span class="k">NotebookLM</span>。指定した資料だけを根拠に答えさせ、引用箇所から原文をたどれます。</p>
+      </div>
+      <div class="card stack-md">
+        <p class="c-title">士業での使いどころ</p>
+        <p class="c-body">就業規則・労使協定・通達を読み込ませる。<span class="k">資料間の矛盾も指摘させられます。</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 19 引用元から原文にあたる ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割2｜リスク②</span></div>
+    <h2 class="stitle">最後は、<b>引用元から原文</b>にあたる</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <ul class="plist mb-lg">
+      <li><span class="k">引用が付いていても、解釈を誤ることがある</span>　引用箇所と結論が合っているかは別問題</li>
+      <li><span class="k">古い資料を渡せば、古い答えが返る</span>　資料が最新かどうかは、人が確認する</li>
+      <li><span class="k">個別事案への当てはめは、最後まで人が判断する</span></li>
+    </ul>
+    <div class="card note">
+      <p class="c-body">指示で減らし、資料で囲い、<span class="k">最後は人が原文で確かめる。</span>この3段構えで、はじめて実務に使えます。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 20 カスタム指示 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">まとめて固定する</span></div>
+    <h2 class="stitle">カスタム指示 ― <b>毎回書かずに済ませる</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid2 mb-lg">
+      <div class="card stack-md">
+        <div><span class="tag ghost">役割1から</span></div>
+        <p class="c-body">ペルソナ・タスク・制約・フォーマットのうち、<span class="k">いつも同じものを固定する</span></p>
+      </div>
+      <div class="card stack-md">
+        <div><span class="tag ghost">役割2から</span></div>
+        <p class="c-body">わからないと答える／引用元を明示する／<span class="k">事実と推測を分ける</span></p>
+      </div>
+    </div>
+    <div class="card note">
+      <p class="c-body"><span class="k">そして必ず ―「私に迎合しないでください」</span></p>
+      <p class="c-body">AIは、結論を持って聞くと賛成材料を並べてきます。賛成だけの回答は、判断を鈍らせます。一度登録すれば、今日の話の大半が自動で効きます。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 21 メモリ機能 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">まとめて固定する</span></div>
+    <h2 class="stitle">メモリ機能は、<b>オンにする</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="card danger mb-lg">
+      <p class="c-body"><span class="k">「学習をオフ」と矛盾しません。</span>オフにしたのは提供者の学習、オンにするのは自分の履歴を覚える機能。別のものです。</p>
+    </div>
+    <div class="grid2 mb-lg">
+      <div class="card stack-md">
+        <div><span class="tag ghost">ChatGPT・Claude</span></div>
+        <p class="c-body">学習とメモリは<span class="k">別のスイッチ</span>。学習オフ＋メモリオンにできる</p>
+      </div>
+      <div class="card warn stack-md">
+        <div><span class="tag ghost">Gemini</span></div>
+        <p class="c-body">アクティビティをオフにすると<span class="k">履歴の保存も学習も止まる</span>（作成したGemは残ります）</p>
+      </div>
+    </div>
+    <p class="eyebrow-caption">顧客名など、覚えさせたくないものが入っていないか、<span class="k">ときどきメモリの中身を確認する。</span></p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 22 レトルトカレー問題 ===== -->
+<section class="slide slide--statement">
+  <div class="head">
+    <div class="kicker">Part 01<span class="sep"></span><span class="jp">役割2｜リスク③</span></div>
+  </div>
+  <div class="body">
+    <p class="statement">レトルトカレーを、<br><b>パウチのままお客さんに出さない</b></p>
+    <p class="statement-sub">AIの出力はレトルトです。ブラウザAIに限った話ではありません。手を加えていないものを、そのまま渡さない。専門家が、判断と、その会社の文脈と、責任を加えて、初めて提供物になります。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 23 第2部 扉 ===== -->
+<section class="slide dark slide--section">
+  <div class="kicker">Part 02<span class="sep"></span><span class="jp">第2部</span></div>
+  <div class="sec-no">02</div>
+  <h2 class="sec-title">定型業務をチャットボット化する</h2>
+  <p class="sec-sub">ボット化の考え方／Gemの設計／任せる範囲とテスト</p>
+</section>
+
+<!-- ===== 24 毎回同じ説明 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 02<span class="sep"></span><span class="jp">問題提起</span></div>
+    <h2 class="stitle">毎回、<b>同じ説明</b>をしていませんか</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <ul class="plist tight mb-lg">
+      <li>育児休業の相談</li>
+      <li>必要書類の案内</li>
+      <li>手続の流れの説明</li>
+      <li>社内規程はどうなっていたかの確認</li>
+      <li>顧問先へのメールの下書き</li>
+    </ul>
+    <div class="card note">
+      <p class="c-body"><span class="k">内容はほぼ同じなのに、毎回ゼロから書いている。</span>その都度AIに指示を出すのではなく、あらかじめ仕込んでおくほうが速いです。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 25 チャットボット化 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 02<span class="sep"></span><span class="jp">考え方</span></div>
+    <h2 class="stitle">定型業務は、<b>チャットボット化</b>する</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="card note mb-lg">
+      <p class="c-body">毎回プロンプトを書くのではなく、<span class="k">業務の目的・質問・回答範囲・終了条件をあらかじめ登録する。</span></p>
+    </div>
+    <div class="versus">
+      <div class="card stack-md">
+        <div><span class="tag ghost">カスタム指示</span></div>
+        <p class="c-title">いつも効く固定</p>
+        <p class="c-body">どの会話でも共通して守らせたい原則</p>
+      </div>
+      <div class="versus-mid"><span>使い分け</span><span>&#8644;</span></div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">Gem</span></div>
+        <p class="c-title">業務ごとの固定</p>
+        <p class="c-body">その業務の目的・資料・答えてよい範囲まで持たせる</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 26 道具の使い分け ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 02<span class="sep"></span><span class="jp">道具の選択</span></div>
+    <h2 class="stitle">道具は、<b>目的で使い分ける</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <table class="dtable mb-lg">
+      <thead><tr><th style="width:620px">目的</th><th>使う道具</th></tr></thead>
+      <tbody>
+        <tr><td class="meta">一回きりの相談</td><td>通常チャット</td></tr>
+        <tr><td class="meta">同じ指示を繰り返す</td><td class="lyr">Gem</td></tr>
+        <tr><td class="meta">同じ資料を調べる</td><td class="lyr">NotebookLM</td></tr>
+        <tr><td class="meta">ファイルを操作する</td><td>作業環境を持つAI（第3部）</td></tr>
+      </tbody>
+    </table>
+    <p class="eyebrow-caption">迷ったら<span class="k">「繰り返すか」「資料があるか」「ファイルを触るか」</span>で分けてください。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 27 Gemの4要素 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 02<span class="sep"></span><span class="jp">ボットの設計</span></div>
+    <h2 class="stitle">Gemにも<b>4要素</b>を入れる</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <p class="eyebrow-caption mb-lg"><span class="k">ペルソナ／タスク／制約／フォーマット ― ここは通常のチャットと同じ。</span>さらに、ボット特有の設計が4つあります。</p>
+    <div class="grid22">
+      <div class="card stack-sm">
+        <p class="c-title">参照資料</p>
+        <p class="c-body">何を根拠に答えるか</p>
+      </div>
+      <div class="card stack-sm">
+        <p class="c-title">質問条件</p>
+        <p class="c-body">何が分からないときに聞き返すか</p>
+      </div>
+      <div class="card note stack-sm">
+        <p class="c-title">終了条件</p>
+        <p class="c-body">どうなったら会話を終えるか</p>
+      </div>
+      <div class="card note stack-sm">
+        <p class="c-title">人への引継条件</p>
+        <p class="c-body">どういう相談が来たら人に回すか</p>
+      </div>
+    </div>
+    <p class="eyebrow-caption mt-lg"><span class="k">終了条件と引継条件がないボットは、答えてはいけないことに答えます。</span></p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 28 FAQボットの例 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 02<span class="sep"></span><span class="jp">設計例</span></div>
+    <h2 class="stitle">育児休業<b>FAQボット</b>の例</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <ul class="plist mb-lg">
+      <li><span class="k">相談目的を確認する</span>　制度を知りたいのか、手続をしたいのかで、答える内容が変わります</li>
+      <li><span class="k">結論を左右する不足情報だけ質問する</span>　全部聞くと、相談者が離脱します</li>
+      <li><span class="k">資料を根拠に回答する</span></li>
+      <li><span class="k">回答できたら会話を終了する</span></li>
+    </ul>
+    <div class="card note">
+      <p class="c-body"><span class="k">ここまで設計して、初めて使えるボットになります。</span></p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 29 任せる範囲 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 02<span class="sep"></span><span class="jp">範囲の線引き</span></div>
+    <h2 class="stitle">ボットに任せる範囲と、<b>人に回す範囲</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="versus">
+      <div class="card note stack-md">
+        <div><span class="tag terra">ボットが答えてよい</span></div>
+        <ul class="plist tight">
+          <li>一般的な制度説明</li>
+          <li>必要書類</li>
+          <li>手続の流れ</li>
+          <li>確認項目</li>
+          <li>回答案の下書き</li>
+        </ul>
+      </div>
+      <div class="versus-mid"><span>線を引く</span><span>&#8644;</span></div>
+      <div class="card danger stack-md">
+        <div><span class="tag ghost">人に回す</span></div>
+        <ul class="plist tight">
+          <li>個別事案の最終判断</li>
+          <li>法的リスクの断定</li>
+          <li>例外的な取扱い</li>
+          <li>労使紛争</li>
+          <li>顧客への正式回答</li>
+        </ul>
+      </div>
+    </div>
+    <p class="eyebrow-caption mt-lg">この線引きを<span class="k">ボットの指示に書き込んでおく。</span>書いていないと、ボットは全部答えようとします。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 30 公開前のテスト ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 02<span class="sep"></span><span class="jp">公開前</span></div>
+    <h2 class="stitle">公開前に<b>5つのテスト</b>をする</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <table class="dtable mb-lg">
+      <thead><tr><th style="width:520px">テストする質問</th><th>見るところ</th></tr></thead>
+      <tbody>
+        <tr><td class="meta">① 通常の質問</td><td>正しく答えるか</td></tr>
+        <tr><td class="meta">② 情報不足</td><td>ちゃんと聞き返すか</td></tr>
+        <tr><td class="meta">③ 範囲外</td><td class="no">断って人に回すか</td></tr>
+        <tr><td class="meta">④ 例外事案</td><td>無理に答えないか</td></tr>
+        <tr><td class="meta">⑤ 古い資料</td><td class="no">改正前の内容を答えないか</td></tr>
+      </tbody>
+    </table>
+    <p class="eyebrow-caption"><span class="k">③と⑤は必ず試してください。</span>ここで事故が起きます。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 31 ボットの運用 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 02<span class="sep"></span><span class="jp">運用</span></div>
+    <h2 class="stitle">ボットは、<b>作って終わり</b>ではありません</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <ul class="plist tight mb-lg">
+      <li>法改正時の資料更新</li>
+      <li>更新したら回答テスト</li>
+      <li>利用範囲の確認</li>
+      <li>人への引継条件の見直し</li>
+    </ul>
+    <div class="card danger">
+      <p class="c-body"><span class="k">定期的に見直す。</span></p>
+      <p class="c-body">情報の更新サイクルは、以前とは比べものにならないほど速くなっています。年1回の見直しでは、もはや間に合いません。作りっぱなしのボットは、すぐに陳腐化します。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 32 第3部 扉 ===== -->
+<section class="slide dark slide--section">
+  <div class="kicker">Part 03<span class="sep"></span><span class="jp">第3部</span></div>
+  <div class="sec-no">03</div>
+  <h2 class="sec-title">相談するAIから、仕事をするAIへ</h2>
+  <p class="sec-sub">AIにパソコンを使わせる／作業ルールと知識／自分専用の環境</p>
+</section>
+
+<!-- ===== 33 余談1 デジタル化の壁 ===== -->
+<section class="slide slide--statement">
+  <div class="head">
+    <div class="kicker">Interlude<span class="sep"></span><span class="jp">余談</span></div>
+  </div>
+  <div class="body">
+    <p class="statement">ここから先は、<br><b>事務所のデジタル化</b>が前提になります</p>
+    <p class="statement-sub">第1部と第2部は、今日からでも始められます。第3部は違います。事務所の仕事がデジタルになっているかどうかで、進めるかどうかが決まります。ここが、ブラウザAIから抜け出せるかどうかの分かれ目です。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 34 余談2 ディレクトリ整理 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Interlude<span class="sep"></span><span class="jp">余談</span></div>
+    <h2 class="stitle">デジタル化の大原則は、<b>ディレクトリ整理</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid2 mb-lg">
+      <div class="card stack-md">
+        <p class="c-title">フォルダ階層</p>
+        <p class="c-body">どの階層に、何を置くか。<span class="k">業務・顧客・年度で分ける。</span></p>
+      </div>
+      <div class="card stack-md">
+        <p class="c-title">ファイル命名ルール</p>
+        <p class="c-body">日付・種別・顧客名を、<span class="k">いつも同じ順番で付ける。</span></p>
+      </div>
+    </div>
+    <div class="card note mb-lg">
+      <p class="c-body"><span class="k">人が探せないものは、AIにも探せません。</span>「デスクトップに全部ある」「ファイル名が新規1・最新版2」では、AIは対象を特定できません。</p>
+    </div>
+    <p class="eyebrow-caption">ここからは、<span class="k">基本的なWindows操作の理解</span>も必要になります。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 35 余談3 パソコンの中まで ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Interlude<span class="sep"></span><span class="jp">余談</span></div>
+    <h2 class="stitle">AIに任せられるのは、<b>パソコンの中</b>の作業まで</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="versus">
+      <div class="card note stack-md">
+        <div><span class="tag terra">今できること</span></div>
+        <p class="c-title">パソコンの中にある<br>データとファイルの作業</p>
+        <p class="c-body">探す／読む／作る／直す</p>
+      </div>
+      <div class="versus-mid"><span>境界</span><span>&#8644;</span></div>
+      <div class="card warn stack-md">
+        <div><span class="tag ghost">まだできないこと</span></div>
+        <p class="c-title">紙の作業、<br>パソコンの外に出る作業</p>
+        <p class="c-body">これはヒューマノイドの領域で、もう少し先の話です。</p>
+      </div>
+    </div>
+    <p class="eyebrow-caption mt-lg">だから今やることは、<span class="k">仕事をパソコンの中に入れること</span>です。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 36 第3部の核 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 03<span class="sep"></span><span class="jp">決定的な違い</span></div>
+    <h2 class="stitle">ブラウザAIは「AIが答える」。<br>作業環境を持つAIは「<b>AIがパソコンを使う</b>」</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="versus">
+      <div class="card stack-md">
+        <div><span class="tag ghost">ブラウザAI</span></div>
+        <p class="c-title">手ぶらのAI</p>
+        <p class="c-body">渡した文章と資料だけで答える。<span class="k">道具を持っていません。</span></p>
+      </div>
+      <div class="versus-mid"><span>この差</span><span>&#8644;</span></div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">作業環境を持つAI</span></div>
+        <p class="c-title">パソコンを使うAI</p>
+        <p class="c-body"><span class="k">フォルダを開き、ファイルを読み、比べ、保存する。</span></p>
+      </div>
+    </div>
+    <p class="eyebrow-caption mt-lg">人でも、<span class="k">パソコンを使えるかどうかで仕事量は変わります。AIも同じです。</span></p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 37 できることが変わる ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 03<span class="sep"></span><span class="jp">差の中身</span></div>
+    <h2 class="stitle">だから、<b>できることが変わる</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <table class="dtable">
+      <thead><tr><th style="width:900px">社労士業務での例</th><th>裏で効いている差</th></tr></thead>
+      <tbody>
+        <tr><td class="meta">前月と今月の給与データを突き合わせ、固定的賃金の変動を洗い出す</td><td>複数ファイルの横断</td></tr>
+        <tr><td class="meta">就業規則と労使協定を並べ、矛盾を指摘させる</td><td>横断＋突合</td></tr>
+        <tr><td class="meta">相談記録のフォルダから、類似案件を探す</td><td>フォルダを検索する</td></tr>
+        <tr><td class="meta">顧問先ごとの通知文を、同じ書式で一括作成する</td><td>繰り返し＋保存</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 38 何を使えばいいか ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 03<span class="sep"></span><span class="jp">道具の選択</span></div>
+    <h2 class="stitle">では、<b>何を使えばいいか</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <table class="dtable mb-lg">
+      <thead><tr><th style="width:300px"></th><th style="width:520px">ブラウザ版</th><th>作業環境を持つAI</th></tr></thead>
+      <tbody>
+        <tr><td class="meta">使い方</td><td>ブラウザで開く</td><td class="lyr">デスクトップアプリ／エディタ／CLI</td></tr>
+        <tr><td class="meta">ファイル</td><td>毎回アップロードする</td><td>自分のフォルダの中で作業する</td></tr>
+        <tr><td class="meta">作業後</td><td>コピーして貼り付ける</td><td>指定した場所に保存される</td></tr>
+      </tbody>
+    </table>
+    <div class="card note">
+      <p class="c-body"><span class="k">この3つは入り口が違うだけで、やることは同じです。</span>いちばん簡単で、機能もそろっているデスクトップアプリから始めれば十分です。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 小扉 AIに渡すもの ===== -->
+<section class="slide slide--section">
+  <div class="kicker">Part 03<span class="sep"></span><span class="jp">第3部</span></div>
+  <div><span class="tag terra">AIに渡すもの</span></div>
+  <h2 class="sec-title">ルールと、知識</h2>
+  <p class="sec-sub">CLAUDE.mdとスキル／メモリとコンテキストの違い／知識を貯める場所</p>
+</section>
+
+<!-- ===== 39 作業ルールをファイルで持たせる ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 03<span class="sep"></span><span class="jp">AIに渡すもの</span></div>
+    <h2 class="stitle">事務所の作業ルールを、<b>ファイルで持たせる</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid2 mb-lg">
+      <div class="card note stack-md">
+        <div><span class="tag terra">CLAUDE.md</span></div>
+        <p class="c-title">AIへの作業指示書</p>
+        <p class="c-body">事務所の前提・言葉づかい・禁止事項。<span class="k">どの作業にも共通して効きます。</span></p>
+      </div>
+      <div class="card note stack-md">
+        <div><span class="tag terra">スキル</span></div>
+        <p class="c-title">業務ごとの手順書</p>
+        <p class="c-body">給与チェック・規程確認・通知文作成。<span class="k">呼び出すだけで同じ手順で動きます。</span></p>
+      </div>
+    </div>
+    <div class="card">
+      <p class="c-body">一度書けば、毎回同じ品質で動く。職員が変わっても同じ手順で回る。</p>
+      <p class="c-body"><span class="k">S3で見た「作業ルールが決まっている」の正体が、これです。</span></p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 40 メモリとコンテキスト ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 03<span class="sep"></span><span class="jp">AIに渡すもの</span></div>
+    <h2 class="stitle">メモリと、<b>コンテキストの蓄積</b>は違います</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <table class="dtable mb-lg">
+      <thead><tr><th style="width:220px"></th><th style="width:560px">メモリ機能</th><th>コンテキストの蓄積</th></tr></thead>
+      <tbody>
+        <tr><td class="meta">誰が</td><td>AIが自動で覚える</td><td class="lyr">自分で貯めて、自分で管理する</td></tr>
+        <tr><td class="meta">量</td><td class="no">そんなに多くは覚えられない</td><td class="ok">いくらでも増やせる</td></tr>
+        <tr><td class="meta">中身</td><td>AI任せ。何を覚えたか把握しにくい</td><td>消せる／直せる／渡す相手を選べる</td></tr>
+      </tbody>
+    </table>
+    <p class="eyebrow-caption"><span class="k">メモリは便利ですが、事務所の知識を預ける器ではありません。</span></p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 41 知識を貯める場所 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 03<span class="sep"></span><span class="jp">AIに渡すもの</span></div>
+    <h2 class="stitle">知識を貯める場所を作る ＝ <b>コンテキストエンジニアリング</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <p class="eyebrow-caption mb-lg">過去の相談・制度メモ・判断基準を、<span class="k">AIが探せる形で蓄積する。</span></p>
+    <div class="grid3 mb-lg">
+      <div class="card layer">
+        <span class="lv">01</span>
+        <span class="ln">顧客固有情報</span>
+      </div>
+      <div class="card layer">
+        <span class="lv">02</span>
+        <span class="ln">事務所共通の知識</span>
+      </div>
+      <div class="card layer">
+        <span class="lv">03</span>
+        <span class="ln">判断基準・作業ルール</span>
+      </div>
+    </div>
+    <div class="card danger">
+      <p class="c-body"><span class="k">混ぜると、顧客Aの情報が顧客Bの回答に混ざります。</span>分けておけば防げます。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 42 計画を出させる ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 03<span class="sep"></span><span class="jp">安全設計</span></div>
+    <h2 class="stitle">任せる前に、<b>計画を出させる</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="card note mb-lg">
+      <p class="c-body"><span class="k">第1部のプランモードが、そのまま安全装置になります。</span>ゴールを伝え、計画を出させ、承認してから実行させる。</p>
+    </div>
+    <ul class="plist tight mb-lg">
+      <li>使用資料／対象ファイル／変更内容／保存先／<span class="k">変更しない範囲</span></li>
+      <li><span class="k">原本を残す・出力先を分ける</span></li>
+    </ul>
+    <div class="card warn">
+      <p class="c-body">リスクは任せる範囲で変わります｜読取・検索 ＜ 新規作成 ＜ 既存ファイル変更 ＜ 削除・外部送信</p>
+      <p class="c-body"><span class="k">操作は元に戻せても、何を読ませたかは取り消せません。</span></p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 43 ハーネスエンジニアリング ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Part 03<span class="sep"></span><span class="jp">到達点</span></div>
+    <h2 class="stitle">自分専用のAI環境 ＝ <b>ハーネスエンジニアリング</b></h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="grid3 mb-lg">
+      <div class="card layer">
+        <span class="lv">Knowledge</span>
+        <span class="ln">知識を置く場所</span>
+        <span class="ld">過去の相談・制度メモ・判断基準</span>
+      </div>
+      <div class="card layer">
+        <span class="lv">Workspace</span>
+        <span class="ln">案件を作業する場所</span>
+        <span class="ld">顧客ごと・業務ごとのフォルダ</span>
+      </div>
+      <div class="card layer">
+        <span class="lv">Rules</span>
+        <span class="ln">事務所のルールを置く場所</span>
+        <span class="ld">CLAUDE.md・スキル</span>
+      </div>
+    </div>
+    <div class="card note">
+      <p class="c-body"><span class="k">AIを賢くするのではなく、AIが働ける足場を作る。</span>この3つがあれば、冒頭の実演と同じことができます。</p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 44 まとめ 扉 ===== -->
+<section class="slide dark slide--section">
+  <div class="kicker">Summary<span class="sep"></span><span class="jp">まとめ</span></div>
+  <h2 class="sec-title">まとめ</h2>
+  <p class="sec-sub">明日から始めること／配布資料／今日いちばんお伝えしたいこと</p>
+</section>
+
+<!-- ===== 45 明日から ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Summary<span class="sep"></span><span class="jp">明日から</span></div>
+    <h2 class="stitle">明日から、<b>この順</b>で始める</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <ul class="plist tight mb-lg">
+      <li><span class="k">学習機能をオフにする</span>　今日中にできます</li>
+      <li><span class="k">カスタム指示を設定する</span>　第1部で挙げた4つ＋「迎合しないでください」</li>
+      <li><span class="k">定型業務を1つ選ぶ</span>　全部やろうとしないでください</li>
+      <li><span class="k">フォルダを1つ整える</span>　これも1つで十分です</li>
+      <li><span class="k">いきなり実行させず、まず計画を出させる</span>　ブラウザAIでもできます</li>
+    </ul>
+    <div class="card note">
+      <p class="c-body">上から順番でかまいません。<span class="k">1つ目と2つ目だけでも、今週中にやってみてください。</span></p>
+    </div>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 46 配布資料 ===== -->
+<section class="slide">
+  <div class="head">
+    <div class="kicker">Summary<span class="sep"></span><span class="jp">配布資料</span></div>
+    <h2 class="stitle">ご自身のPCに、<b>同じ環境</b>を作れます</h2>
+    <div class="bar"></div>
+  </div>
+  <div class="body">
+    <div class="card note stack-md mb-lg">
+      <div><span class="tag terra">配布する手順書</span></div>
+      <p class="c-title">Claude Code 環境構築 実演用テキスト<br>（社労士業務版）</p>
+      <p class="c-body"><span class="k">冒頭の実演と同じ環境を、STEP 1〜12 で作れます。</span></p>
+    </div>
+    <ul class="plist tight">
+      <li>フォルダ構成／CLAUDE.md／スキル／禁止事項の設定</li>
+      <li>毎日の使い方、よく使う頼み方</li>
+      <li>個人情報の扱いと、この仕組みの限界</li>
+    </ul>
+    <p class="eyebrow-caption mt-lg">URLをお知らせします。<span class="k">読む資料ではありません。開いて、手を動かしてください。</span></p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 47 仕事の分担を設計する ===== -->
+<section class="slide slide--statement">
+  <div class="head">
+    <div class="kicker">Summary<span class="sep"></span><span class="jp">結論</span></div>
+  </div>
+  <div class="body">
+    <p class="statement">AI活用とは、<br><b>仕事の分担を設計する</b>ことです</p>
+    <p class="statement-sub">AIに任せること／人が確認すること／人にしかできないこと。この3つに分けて、線を引く作業です。線の位置は、事務所によって違って構いません。ただ、線を引かないまま使い始めると、任せすぎるか、まったく使わないかの、どちらかになります。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>AI活用研修</span></div>
+</section>
+
+<!-- ===== 48 クロージング ===== -->
+<section class="slide dark slide--statement">
+  <div class="head">
+    <div class="kicker">Closing<span class="sep"></span><span class="jp">おわりに</span></div>
+  </div>
+  <div class="body">
+    <p class="statement">AIを使えるかどうかは、<br>技術の差ではありません。<br><b>仕事をどのように設計するか</b>の差です。</p>
+    <p class="statement-sub">まじめな方ほど、AIを使うことに抵抗があります。それは、責任を持って仕事をしている証拠です。だからこそ、任せる範囲を自分で決めてください。決めた範囲の中でなら、安心して使えます。</p>
+  </div>
+  <div class="foot"><span class="pg"></span><span class="tick"></span><span>土橋社労士事務所</span></div>
+</section>
+</div>
+
+<div class="nav-ui progress"><div class="bar"></div></div>
+<div class="nav-ui hint"><kbd>&rarr;</kbd> 次へ &nbsp; <kbd>&larr;</kbd> 戻る</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var stage=document.getElementById('stage');
+  var bar=document.querySelector('.progress .bar');
+  var i=0;
+  function fit(){ var s=Math.min(innerWidth/1920, innerHeight/1080); stage.style.transform='scale('+s+')'; }
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){ s.classList.toggle('active',k===i); });
+    if(bar) bar.style.width=((i+1)/slides.length*100)+'%';
+    location.hash=i+1;
+  }
+  function next(){ show(i+1); } function prev(){ show(i-1); }
+  addEventListener('keydown',function(e){
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
+    else if(e.key==='Home'){ show(0); } else if(e.key==='End'){ show(slides.length-1); }
+  });
+  addEventListener('click',function(e){ if(e.clientX < innerWidth*0.25) prev(); else next(); });
+  addEventListener('resize',fit);
+  var start=parseInt((location.hash||'').replace('#',''),10);
+  fit(); show(isNaN(start)?0:start-1);
+})();
+</script>
+</body>
+</html>
