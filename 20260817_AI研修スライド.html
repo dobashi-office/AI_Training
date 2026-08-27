@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
 <title>AI研修スライド｜AIを使う人から、AIを働かせる人へ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1432,7 +1432,7 @@ body{
 </div>
 
 <div class="nav-ui progress"><div class="bar"></div></div>
-<div class="nav-ui hint"><kbd>&rarr;</kbd> 次へ &nbsp; <kbd>&larr;</kbd> 戻る</div>
+<div class="nav-ui hint"><kbd id="navNext">&rarr;</kbd> 次へ &nbsp; <kbd id="navPrev">&larr;</kbd> 戻る</div>
 
 <script>
 (function(){
@@ -1448,6 +1448,10 @@ body{
     location.hash=i+1;
   }
   function next(){ show(i+1); } function prev(){ show(i-1); }
+  var navNext=document.getElementById('navNext');
+  var navPrev=document.getElementById('navPrev');
+  if(navNext) navNext.addEventListener('click',function(e){ e.stopPropagation(); next(); });
+  if(navPrev) navPrev.addEventListener('click',function(e){ e.stopPropagation(); prev(); });
   addEventListener('keydown',function(e){
     if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
     else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
