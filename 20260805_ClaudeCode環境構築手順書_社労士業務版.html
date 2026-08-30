@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="robots" content="noindex, nofollow">
+<meta name="googlebot" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -306,8 +306,8 @@ button { font:inherit; }
   <nav class="toolbar" aria-label="ページ内ナビゲーション">
     <div class="toolbar-inner">
       <div class="toc"><a href="#heading-4">準備編｜STEP 1〜5</a>
-<a href="#heading-12">作成編｜STEP 6〜11（Claudeに貼る）</a>
-<a href="#heading-22">確認編｜STEP 12</a>
+<a href="#heading-12">作成編｜STEP 6〜10（Claudeに貼る）</a>
+<a href="#heading-22">確認編｜STEP 11</a>
 <a href="#heading-27">完成した形</a>
 <a href="#heading-28">毎日の使い方</a>
 <a href="#heading-35">個人情報と、この仕組みの限界</a>
@@ -368,36 +368,30 @@ button { font:inherit; }
 </tr>
 <tr>
 <td>7</td>
-<td><code>README.md</code></td>
-<td>フォルダの説明書（人＋Claudeが読む）</td>
-<td>3分</td>
+<td><code>CLAUDE.md</code></td>
+<td>フォルダの説明＋Claudeへのルール（毎回読まれる）</td>
+<td>6分</td>
 </tr>
 <tr>
 <td>8</td>
-<td><code>CLAUDE.md</code></td>
-<td>Claudeへのルール（毎回読まれる）</td>
-<td>5分</td>
-</tr>
-<tr>
-<td>9</td>
 <td><code>.gitignore</code></td>
 <td>記録しないものの指定</td>
 <td>3分</td>
 </tr>
 <tr>
-<td>10</td>
+<td>9</td>
 <td><code>settings.json</code></td>
 <td>禁止事項の登録（アプリが強制）</td>
 <td>5分</td>
 </tr>
 <tr>
-<td>11</td>
+<td>10</td>
 <td>git の記録</td>
 <td>元に戻せる仕組み</td>
 <td>3分</td>
 </tr>
 <tr>
-<td>12</td>
+<td>11</td>
 <td>動作確認</td>
 <td>3項目チェック</td>
 <td>5分</td>
@@ -563,7 +557,7 @@ button { font:inherit; }
 <p><strong>ターミナルは Claude と同じフォルダで開きます。</strong> Claude が触っているのと同じファイルが見えるので、確認したいときに便利です。</p>
 </div>
 <hr>
-</div></div><div class="section-header" id="heading-12"><span class="section-icon">🏗️</span><div><h2>作成編｜STEP 6〜11（Claudeに貼る）</h2><p class="section-sub">業務フォルダと運用ルールを構築する</p></div></div>
+</div></div><div class="section-header" id="heading-12"><span class="section-icon">🏗️</span><div><h2>作成編｜STEP 6〜10（Claudeに貼る）</h2><p class="section-sub">業務フォルダと運用ルールを構築する</p></div></div>
 <div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-13">STEP 6｜フォルダ構成を作る</h2>
 <p><strong>何をするか</strong>：業務の流れどおりに番号を振ったフォルダを作ります（01 もらう → 02 作る → 03 完成）。
 <strong>なぜ</strong>：並び順が固定され、Claude にも「01は入力、03は出力」と名前だけで伝わります。</p>
@@ -637,18 +631,32 @@ git は空のフォルダを記録できないため、フォルダの存在を�
 </tr>
 </tbody></table></div>
 <hr>
-</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-14">STEP 7｜README.md を作る</h2>
-<p><strong>何をするか</strong>：フォルダの説明書を置きます。
-<strong>なぜ</strong>：人が読んでも分かり、Claude も参照します。「このフォルダは何か」を毎回説明せずに済みます。</p>
+</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-15">STEP 7｜CLAUDE.md（ルール）を作る</h2>
+<p><strong>何をするか</strong>：Claude へのルールブックを置きます。フォルダの説明も、この1ファイルにまとめます。
+<strong>なぜ</strong>：Claude Code はセッションを始めるたびにこれを読みます。<strong>ここに書けば毎回説明しなくて済みます。</strong></p>
+<div class="card-sub sub-point"><h4>💡 補足</h4>
+<p><strong>200行を超えないでください。</strong> 長すぎると読み落とします。
+迷ったら「この1行を消したら Claude は間違えるか？」で判断してください。</p>
+</div>
+<div class="card-sub sub-point"><h4>💡 補足</h4>
+<p><strong>README.md は作りません。</strong> Claude Code が起動のたびに必ず読むのは <code>CLAUDE.md</code> だけです。README.md は指示しない限り読まれず、書いても内容が CLAUDE.md と重複して<strong>片方だけ古くなります。</strong>フォルダの説明はこの1ファイルに集約します。</p>
+</div>
 <p><strong>📋 Claudeに貼る</strong></p>
-<div class="code-card" id="code-7"><div class="code-toolbar"><span>コピーして使える内容</span><button type="button" class="copy-btn" data-copy-target="code-7">コピー</button></div><pre><code>README.md というファイルをフォルダの直下に作成してください。
+<div class="code-card" id="code-8"><div class="code-toolbar"><span>コピーして使える内容</span><button type="button" class="copy-btn" data-copy-target="code-8">コピー</button></div><pre><code>CLAUDE.md というファイルをフォルダの直下に作成してください。
 内容は次のとおりです。この指示文は含めず、下の本文だけを書いてください。
 
 貼り付けの際に空行が失われている場合があります。
-Markdown として正しく表示されるよう、見出しの前後と表の前に空行を入れて整形してください。
+Markdown として正しく表示されるよう、見出しの前後に空行を入れて整形してください。
+ただし、ルールの文言そのものは1字も変えないでください。
 作成後、できあがった内容を画面に表示して見せてください。
 
-# 社労士業務フォルダ
+# CLAUDE.md — 社労士業務フォルダ
+
+## 回答の言語
+
+- すべての回答・説明・作成物は日本語で書く
+- 顧問先に出す文書は「です・ます」調
+- 事務所内のメモは簡潔な書き方で構わない
 
 ## このフォルダは何か
 
@@ -679,68 +687,12 @@ Markdown として正しく表示されるよう、見出しの前後と表の�
 ## 仕事の流れ
 
 1. もらった資料を 01_受領資料 に置く
-2. Claude デスクトップアプリの Code タブでこのフォルダを開く
-3. 資料を読み取らせ、要点を 02_作業中 にメモさせる
-4. 内容を確認し、必要なら追加で調べさせる
-5. 03_完成資料 の該当業務フォルダに、案件フォルダを作って書き出させる
-6. 出来上がったものを必ず人が読んで確認する
-7. 区切りがついたら記録（コミット）する
-8. 案件終了後、01 と 02 の中身を 99_過去案件 に移す
-
-## 完成資料の名前の付け方
-
-03_完成資料/(業務種別)/YYYYMMDD_顧問先名_内容がわかる名称/
-
-例：03_完成資料/労務相談/20260804_A商事_固定残業代の見直し/
-
-- 日付は作成日
-- 顧問先名が出せない場合は業種で代替する（例：製造業B社）
-- 「相談」「資料」だけの名前は付けない
-
-## 記録（git）について
-
-このフォルダは git で変更履歴を記録している。
-01_受領資料・02_作業中・10_顧問先情報・99_過去案件 は記録の対象外。
-顧問先の個人情報を履歴に残さないための措置。
-
-この git 記録は、このPCの中だけで完結させる。
-GitHub 等のインターネット上のサービスには接続せず、push もしない。
-03_完成資料 のフォルダ名には顧問先名が入るため、外部に出せば漏えいになる。
-</code></pre></div>
-<div class="card-sub sub-point"><h4>💡 補足</h4>
-<p><strong>できたファイルの確認は「差分ビュー」が便利です。</strong> Claude がファイルを作ると <code>+42 -0</code> のような表示が出ます。<strong>クリックすると、追加された内容が全部見られます。</strong> これがデスクトップ版の一番大きな利点です。</p>
-</div>
-<div class="card-sub sub-point"><h4>💡 補足</h4>
-<p><strong>完成資料は「案件ごとのフォルダ」に入れます。</strong> 1つの相談で回答文・論点整理と複数ファイルができるため、バラバラに置くと半年後にどれが同じ案件か分からなくなります。</p>
-</div>
-<hr>
-</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-15">STEP 8｜CLAUDE.md（ルール）を作る</h2>
-<p><strong>何をするか</strong>：Claude へのルールブックを置きます。
-<strong>なぜ</strong>：Claude Code はセッションを始めるたびにこれを読みます。<strong>ここに書けば毎回説明しなくて済みます。</strong></p>
-<div class="card-sub sub-point"><h4>💡 補足</h4>
-<p><strong>200行を超えないでください。</strong> 長すぎると読み落とします。
-迷ったら「この1行を消したら Claude は間違えるか？」で判断してください。</p>
-</div>
-<p><strong>📋 Claudeに貼る</strong></p>
-<div class="code-card" id="code-8"><div class="code-toolbar"><span>コピーして使える内容</span><button type="button" class="copy-btn" data-copy-target="code-8">コピー</button></div><pre><code>CLAUDE.md というファイルをフォルダの直下に作成してください。
-内容は次のとおりです。この指示文は含めず、下の本文だけを書いてください。
-
-貼り付けの際に空行が失われている場合があります。
-Markdown として正しく表示されるよう、見出しの前後に空行を入れて整形してください。
-ただし、ルールの文言そのものは1字も変えないでください。
-作成後、できあがった内容を画面に表示して見せてください。
-
-# CLAUDE.md — 社労士業務フォルダ
-
-## 回答の言語
-
-- すべての回答・説明・作成物は日本語で書く
-- 顧問先に出す文書は「です・ます」調
-- 事務所内のメモは簡潔な書き方で構わない
-
-## このフォルダの使い方
-
-フォルダの役割は README.md に書いてある。作業前に確認すること。
+2. 資料を読み取り、要点を 02_作業中 にメモとして書き出す
+3. 内容を私が確認し、必要なら追加で調べる
+4. 03_完成資料 の該当業務フォルダに、案件フォルダを作って書き出す
+5. 出来上がったものは必ず私が読んで確認する
+6. 区切りがついたら記録（コミット）する
+7. 案件終了後、01 と 02 の中身を 99_過去案件 に移す
 
 ## 完成資料の保存ルール（必ず守る）
 
@@ -810,10 +762,10 @@ Markdown として正しく表示されるよう、見出しの前後に空行�
 </code></pre></div>
 <div class="card-sub sub-point"><h4>💡 補足</h4>
 <p><strong>CLAUDE.md は「お願い」であって「強制」ではありません。</strong>
-会話が長くなると読み落とします。だから STEP 10 で機械的に止める仕組みを足します。</p>
+会話が長くなると読み落とします。だから STEP 9 で機械的に止める仕組みを足します。</p>
 </div>
 <hr>
-</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-16">STEP 9｜.gitignore を作る</h2>
+</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-16">STEP 8｜.gitignore を作る</h2>
 <p><strong>何をするか</strong>：記録の対象から外すファイルを指定します。
 <strong>なぜ</strong>：<strong>一度記録すると、あとで消しても履歴に残り続けます。</strong> 給与明細やタイムカードは最初から対象に入れません。</p>
 <p><strong>📋 Claudeに貼る</strong></p>
@@ -863,7 +815,7 @@ desktop.ini
 </tr>
 </thead>
 <tbody><tr>
-<td><code>README.md</code> / <code>CLAUDE.md</code></td>
+<td><code>CLAUDE.md</code></td>
 <td>する</td>
 <td>設定。履歴を残す価値</td>
 </tr>
@@ -907,10 +859,10 @@ desktop.ini
 <p><strong><code>!</code> の行は「例外として記録する」意味です。</strong> 中身を全部除外したうえで、<code>.gitkeep</code>（空の目印）だけを記録します。これで「フォルダは残るが中身は一切記録されない」状態になります。<strong>2行はセットです。</strong></p>
 </div>
 <div class="card-sub sub-point"><h4>💡 補足</h4>
-<p><strong>記録する＝安全、ではありません。</strong> <code>03_完成資料</code> はフォルダ名に顧問先名が入り、中身は相談内容です。<strong>この記録を外部に出せば漏えいです。</strong> STEP 10 で <code>git push</code> と <code>git remote</code> を機械的に禁止します。</p>
+<p><strong>記録する＝安全、ではありません。</strong> <code>03_完成資料</code> はフォルダ名に顧問先名が入り、中身は相談内容です。<strong>この記録を外部に出せば漏えいです。</strong> STEP 9 で <code>git push</code> と <code>git remote</code> を機械的に禁止します。</p>
 </div>
 <hr>
-</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-17">STEP 10｜settings.json（禁止事項）を作る</h2>
+</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-17">STEP 9｜settings.json（禁止事項）を作る</h2>
 <p><strong>何をするか</strong>：<code>.claude</code> フォルダの中に設定ファイルを1つ作り、<strong>やってはいけない操作</strong>を登録します。
 <strong>なぜ</strong>：CLAUDE.md が「お願い」なのに対し、これは<strong>Claude Code が強制的に止めます。</strong> 会話でどう頼まれても解除されません。</p>
 <div class="table-wrap"><table class="compare-table">
@@ -1039,7 +991,7 @@ desktop.ini
 <p><strong>CLI版の <code>/exit</code> に当たる操作はありません。</strong> アプリのウィンドウを閉じて開き直すだけです。</p>
 </div>
 <hr>
-</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-20">STEP 11｜git で「戻せる状態」にする</h2>
+</div></div><div class="card step-card"><div class="card-body"><h2 class="step-heading" id="heading-20">STEP 10｜git で「戻せる状態」にする</h2>
 <p><strong>何をするか</strong>：フォルダを git 管理にし、最初の記録を作ります。
 <strong>なぜ</strong>：セーブポイントです。Claude が余計なことをしても、記録した時点にまるごと戻せます。<strong>覚える操作は「記録して」の一言だけ</strong>です。</p>
 <p><strong>📋 Claudeに貼る</strong></p>
@@ -1060,7 +1012,7 @@ desktop.ini
 <p><strong>git 管理にしたあと、サイドバーの「+ New session」で新しいセッションを作ると、Claude が別の作業用コピーで作業することがあります。</strong> できあがったファイルが元のフォルダに見当たらない、という現象の正体はこれです。</p>
 <p><strong>対策はかんたんで、顧問先を切り替えるときは「新しいセッション」ではなく <code>/clear</code> を使ってください。</strong> 詳しくは後述します。</p>
 <hr>
-</div></div><div class="section-header" id="heading-22"><span class="section-icon">✅</span><div><h2>確認編｜STEP 12</h2><p class="section-sub">設定が意図どおりに働くか検証する</p></div></div>
+</div></div><div class="section-header" id="heading-22"><span class="section-icon">✅</span><div><h2>確認編｜STEP 11</h2><p class="section-sub">設定が意図どおりに働くか検証する</p></div></div>
 <p><strong>3つとも確認してください。特に③が最重要です。</strong></p>
 <h3 id="heading-23">① ルールが効いているか</h3>
 <p><strong>📋 Claudeに貼る</strong></p>
@@ -1124,8 +1076,7 @@ deny・ask・allow の中身をそのまま表示してください。
 <hr>
 <div class="section-header" id="heading-27"><span class="section-icon">📁</span><div><h2>完成した形</h2><p class="section-sub">最終的なフォルダ構成を確認する</p></div></div>
 <div class="code-card" id="code-16"><div class="code-toolbar"><span>コピーして使える内容</span><button type="button" class="copy-btn" data-copy-target="code-16">コピー</button></div><pre><code>（業務フォルダ）\
-├── README.md                    フォルダの説明書
-├── CLAUDE.md                    Claudeへのルール
+├── CLAUDE.md                    フォルダの説明＋Claudeへのルール
 ├── .gitignore                   記録しないものの指定
 ├── .claude\
 │   └── settings.json            禁止事項
@@ -1542,12 +1493,11 @@ deny・ask・allow の中身をそのまま表示してください。
 <p><strong>作成編</strong></p>
 <ul>
 <li><input disabled="" type="checkbox"> STEP 6　フォルダ構成と <code>.gitkeep</code></li>
-<li><input disabled="" type="checkbox"> STEP 7　<code>README.md</code></li>
-<li><input disabled="" type="checkbox"> STEP 8　<code>CLAUDE.md</code></li>
-<li><input disabled="" type="checkbox"> STEP 9　<code>.gitignore</code></li>
-<li><input disabled="" type="checkbox"> STEP 10　<code>.claude/settings.json</code></li>
-<li><input disabled="" type="checkbox"> STEP 10　<strong>アプリを再起動して、フォルダを信頼した</strong></li>
-<li><input disabled="" type="checkbox"> STEP 11　git の記録を開始（リモートなし）</li>
+<li><input disabled="" type="checkbox"> STEP 7　<code>CLAUDE.md</code></li>
+<li><input disabled="" type="checkbox"> STEP 8　<code>.gitignore</code></li>
+<li><input disabled="" type="checkbox"> STEP 9　<code>.claude/settings.json</code></li>
+<li><input disabled="" type="checkbox"> STEP 9　<strong>アプリを再起動して、フォルダを信頼した</strong></li>
+<li><input disabled="" type="checkbox"> STEP 10　git の記録を開始（リモートなし）</li>
 </ul>
 <p><strong>確認編</strong></p>
 <ul>
